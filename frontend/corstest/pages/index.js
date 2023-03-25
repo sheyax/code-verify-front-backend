@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-
+import Cookies from "universal-cookie"
+import jwt from "jwt-decode"
 export default function Home() {
+  const cookies = new Cookies();
   const [data, setData] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -10,28 +12,30 @@ export default function Home() {
   const router = useRouter();
 
   const getData = async () => {
-    const res = await axios.get("https://ogo8ul-5000.csb.app/auth/user");
+    const res = await axios.get("http://localhost:5000/auth/user");
 
     setData(res.data);
   };
 
   const login = async (e) => {
     e.preventDefault();
-    const res = await axios.post(
-      "https://ogo8ul-5000.csb.app/auth/login",
-      {
-        username,
-        password,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-      { withCredentials: true }
-    );
+    const res = await fetch('http://localhost:5000/auth/login',{
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"},
+        credentials:'include',
+        body: JSON.stringify({
+          username,
+          password
+        })
+      
+    })
 
-    console.log(res.data);
+    // const data= res.json();
+    //console.log(data);
+
+  
+    ///cookies.set('jwt', res.data.tokener, { expires: new Date(60*1000)});
     router.push("/feedpage");
   };
 

@@ -3,7 +3,7 @@ import { useState } from "react";
 export default function FeedPage() {
   const [data, setData] = useState("");
   const getData = async () => {
-    const res = await axios.get("https://ogo8ul-5000.csb.app/auth/user");
+    const res = await axios.get("http://localhost:5000/auth/user", {withCredentials: true});
 
     setData(res.data);
   };
