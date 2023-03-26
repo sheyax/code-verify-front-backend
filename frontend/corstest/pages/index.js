@@ -34,7 +34,8 @@ export default function Home() {
     // const data= res.json();
     //console.log(data);
 
-  
+  const data= await res.json();
+  console.log(data.message);
     ///cookies.set('jwt', res.data.tokener, { expires: new Date(60*1000)});
     router.push("/feedpage");
   };

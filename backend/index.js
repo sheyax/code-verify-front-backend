@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 var auth = require("./routes/authentication");
-
+var feed = require("./routes/datafeed")
 
 // app.get('/set-cookies', (req, res) => {
 //     // res.setHeader('Set-Cookie', 'newUser=true')
@@ -47,3 +47,4 @@ app.listen(5000, () => {
 });
 
 app.use("/auth", auth);
+app.use("/feed", feed);
