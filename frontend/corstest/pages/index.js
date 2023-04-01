@@ -1,10 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Cookies from "universal-cookie"
-import jwt from "jwt-decode"
+
 export default function Home() {
-  const cookies = new Cookies();
   const [data, setData] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -19,23 +17,23 @@ export default function Home() {
 
   const login = async (e) => {
     e.preventDefault();
-    const res = await fetch('http://localhost:5000/auth/login',{
-      method: 'POST',
+    const res = await fetch("http://localhost:5000/auth/login", {
+      method: "POST",
       headers: {
-        "Content-Type": "application/json"},
-        credentials:'include',
-        body: JSON.stringify({
-          username,
-          password
-        })
-      
-    })
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
 
     // const data= res.json();
     //console.log(data);
 
-  const data= await res.json();
-  console.log(data.message);
+    const data = await res.json();
+    console.log(data.message);
     ///cookies.set('jwt', res.data.tokener, { expires: new Date(60*1000)});
     router.push("/feedpage");
   };

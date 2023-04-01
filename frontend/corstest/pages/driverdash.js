@@ -6,7 +6,6 @@ import TripCard from "./Components/TripCard";
 import Header from "./Components/Header";
 import FooterMenu from "./Components/FooterMenu";
 
-
 export default function FeedPage() {
   const [data, setData] = useState("");
   const [user, setUser] = useState(null);
@@ -14,56 +13,53 @@ export default function FeedPage() {
   const [vehicleNumber, setVehicleNumber] = useState("");
   const [trips, setTrips] = useState([]);
   const [userRole, setUserRole] = useState("");
-  const router= useRouter();
-
+  const router = useRouter();
 
   //----------------------- get user -------------------------//
- 
 
   const getData = async () => {
-    try{ const res = await fetch("http://localhost:5000/auth/driver/user", {
-      credentials: 'include'
-    });
- 
-     //setData(await res.data);
-   const  info= await res.json();
-     setUsername(info.username);
-     setVehicleNumber(info.assignedVehicle);
-     setTrips(info.dailyTrips);
-     setUserRole(info.roles);
- 
- console.log(vehicleNumber, trips)
-   
-   } catch (e) {
-     console.log("Error getting user", e);
-         router.push("/driverlogin");
-   }
- 
- 
- 
-   };
-
-useEffect(()=>{
-getData()
-}, [])
-
-//-----------------Logout-----------------------------//
-  const logout = async () => {
     try {
       const res = await fetch(
-        "http://localhost:5000/auth/driver/logout",
+        "https://tripdbsax-production.up.railway.app/auth/driver/user",
         {
-            method: "POST",
-            headers: {"Content-Type": "application/"},
-            credentials: 'include'
+          credentials: "include",
         }
       );
 
-      console.log(res.data)
+      //setData(await res.data);
+      const info = await res.json();
+      setUsername(info.username);
+      setVehicleNumber(info.assignedVehicle);
+      setTrips(info.dailyTrips);
+      setUserRole(info.roles);
+
+      console.log(vehicleNumber, trips);
+    } catch (e) {
+      console.log("Error getting user", e);
+      router.push("/driverlogin");
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  //-----------------Logout-----------------------------//
+  const logout = async () => {
+    try {
+      const res = await fetch(
+        "https://tripdbsax-production.up.railway.app/auth/driver/logout",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/" },
+          credentials: "include",
+        }
+      );
+
+      console.log(res.data);
       router.push("/driverlogin");
     } catch (err) {}
   };
-
 
   //------------------ trip calculation -------------------------------//
   let totalTrip = 0;
@@ -88,13 +84,11 @@ getData()
     //add outstation
   });
 
-
   //----------------frontend--------------------------//
   return (
     <div className="flex flex-col h-screen bg-gray-200">
-
-      <Header/>
-          <div>
+      <Header />
+      <div>
         {/* logout */}
         <p className="text-sm text-red-500 p-2" onClick={logout}>
           Logout
@@ -123,7 +117,7 @@ getData()
         </div>
       ))}
 
-      <FooterMenu/>
+      <FooterMenu />
     </div>
   );
 }
